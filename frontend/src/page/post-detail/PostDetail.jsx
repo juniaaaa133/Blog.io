@@ -29,7 +29,7 @@ const PostDetail = () => {
 
   return (
     <>
-    <div className={`shadow-md z-[2] fixed top-0 bottom-0 right-[45px] bg-sec m-auto w-fit h-fit flex mega-trans items-center gap-[5px] ${isOpened ? 'right-[45px]' : 'right-[-100px]'}`}>
+    <div className={`shadow-md z-[2] fixed top-0 bottom-0 bg-sec m-auto w-fit h-fit flex mega-trans items-center gap-[5px] ${isOpened ? 'right-[45px]' : 'right-[-100px]'}`}>
     <CiEdit onClick={()=>navigate('edit')} className='fontclH w-[45px] h-[45px] bg-sec bcu mega-trans p-[10px] text-[20px]  rounded-[5px]'/>
         <AiOutlineDelete onClick={handleDeletePost} className='fontclH w-[45px] h-[45px] bg-sec bcu mega-trans p-[12px] text-[20px]  rounded-[5px]'/>
     </div>
