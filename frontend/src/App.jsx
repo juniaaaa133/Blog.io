@@ -48,6 +48,9 @@ function App() {
           action: updateAction,
         }
       ]
+     },
+     {
+      path : 'authenticate'
      }
   ])
 
