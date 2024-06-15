@@ -1,0 +1,31 @@
+.ctn {
+    width: 90%;
+    display: grid;
+    grid-template-columns: 31% 31% 31%;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+}
+
+@media (max-width: 990px) {
+    .ctn {
+        grid-template-columns: 48% 48%;
+    }
+    
+}
+
+@media (max-width: 600px) {
+    .ctn {
+        justify-content: center;
+        grid-template-columns: 400px;
+    }
+    
+}
+
+@media (max-width: 480px) {
+    .ctn {
+        justify-content: center;
+        grid-template-columns: 95%;
+    }
+    
+}
