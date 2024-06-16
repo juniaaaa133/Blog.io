@@ -5,6 +5,7 @@ import PostDetail, { detailAction, detailLoader } from './page/post-detail/PostD
 import CreatePost, { createActoin } from './page/create-post/CreatePost';
 import EditPost, { updateAction } from './page/edit-post/EditPost';
 import Error from './page/error/Error';
+import AuthPage from './page/auth/AuthPage';
 
 function App() {
 
@@ -29,29 +30,29 @@ function App() {
           element : <PostDetail />,
           action :detailAction,
         },
+        {
+          id : 'blog',
+          path : 'blog/:id',
+          loader : detailLoader,
+          children : [
+            {
+              index : true,
+              element : <PostDetail />
+            },
+            {
+              path : 'edit',
+              element :<EditPost />,
+              action: updateAction,
+            }
+          ]
+         },
+         {
+          path : 'authenticate',
+          element : <AuthPage />
+         }
       ]
     },
-     {
-      id : 'blog',
-      path : 'blog/:id',
-      element :<Layout />,
-      errorElement : <Error />,
-      loader : detailLoader,
-      children : [
-        {
-          index : true,
-          element : <PostDetail />
-        },
-        {
-          path : 'edit',
-          element :<EditPost />,
-          action: updateAction,
-        }
-      ]
-     },
-     {
-      path : 'authenticate'
-     }
+   
   ])
 
   return <RouterProvider router={router} />

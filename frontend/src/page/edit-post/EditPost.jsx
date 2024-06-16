@@ -1,6 +1,6 @@
 import React from 'react'
 import PostForm from '../../components/form/PostForm'
-import { redirect, useActionData, useRouteLoaderData } from 'react-router'
+import { json, redirect, useActionData, useRouteLoaderData } from 'react-router'
 
 const EditPost = () => {
 
@@ -28,7 +28,6 @@ export const updateAction = async ({request,params}) => {
         image : formData.get('image'),
         date : formData.get('date')
     }
-    console.log(data)
 
     let res = await fetch(
         `http://localhost:8080/posts/${params.id}`,{
@@ -39,9 +38,14 @@ export const updateAction = async ({request,params}) => {
         body : JSON.stringify(data)
         }
       )
+      if(res.status === 422){
+        return res
+      }else if(res.status === 503){
+        throw json({message : "No Internet Connection!"} , {status : 503})
+      }
+    
       if(!res.ok) {
-        console.log("ERROR")
-        return;
+      throw json({message : 'Something gone wrong!'} , {status : 500})
       }
       return redirect('/');
 }

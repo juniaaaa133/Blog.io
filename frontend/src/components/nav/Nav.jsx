@@ -20,8 +20,8 @@ let [isOpened,setIsOpened] = useState(false);
             <NavLink to={`/create-post`} className='text-[16px] main-f'>Create Post</NavLink>
         </div>
         <div className="flex items-center gap-[10px] sm:gap-[20px]">
-            <NavLink to={`/login`} className='text-[16px] main-f'>Login</NavLink>
-            <NavLink to={`/register`} className='text-[16px] main-f btn1 px-[20px] py-[2px]'>Register</NavLink>
+            <NavLink to={`authenticate?form=login`} className='text-[16px] main-f'>Login</NavLink>
+            <NavLink to={`/authenticate?form=signup`} className='text-[16px] main-f btn1 px-[20px] py-[2px]'>Register</NavLink>
         </div>
     </div>
     <div className={`flex p-[20px] flex-col gap-[20px] w-[200px] h-full bg-sec z-[7] fixed top-0 mega-trans ${isOpened ? 'left-0' : 'left-[-210px]'}`}>
