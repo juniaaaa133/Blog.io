@@ -1,40 +1,33 @@
 import React from 'react'
-import AuthForm from '../../components/form/AuthForm'
-import { Form, Link, useSearchParams } from 'react-router-dom'
+import { Form, Link, json, useActionData, useRouteError, useSearchParams } from 'react-router-dom'
+import { uuidv7 } from 'uuidv7';
 
 const AuthPage = () => {
 
+  let data = useActionData();
   let [searchParams,setSearchParams] = useSearchParams();
+
   let IsLoginPage = searchParams.get('form') === 'login'
-let error = null;
+
   return (
     <>
     <div className='w-[90%]  sm:w-[70%] md:w-[400px] mx-auto my-[50px] flex flex-col gap-[20px]'>
         <p className="logo-f fontcl text-[18px] sm:text-[24px]">{IsLoginPage ? 'Login your account' : 'Create New Account'}</p>
         <Form method='POST' className='flex flex-col gap-[30px]'>
-          {
-            !IsLoginPage &&
-            <div className="flex flex-col gap-[7px] w-full">
-            <label className='text-[14px] fontcl3 logo-f'>Username</label>
-            {
-            error && <p className="logo-f text-[14px] text-red-500">{error.title}</p>
-            }
-            <input name='title' placeholder='Username' className='logo-f text-[14px] fontcl inp w-full h-[40px]' type="text" />
-        </div>
-          }
+         
             <div className="flex flex-col gap-[7px] w-full">
                 <label className='text-[14px] fontcl3 logo-f'>Email address</label>
                 {
-                error && <p className="logo-f text-[14px] text-red-500">{error.title}</p>
+                data && data.errors && <p className="logo-f text-[14px] text-red-500">{data.errors.email}</p>
                 }
-                <input name='title' placeholder='example@gmail.com' className='logo-f text-[14px] fontcl inp w-full h-[40px]' type="email" />
+                <input name='email' placeholder='example@gmail.com' className='logo-f text-[14px] fontcl inp w-full h-[40px]' type="email" />
             </div>
             <div className="flex flex-col gap-[7px] w-full">
                 <label className='text-[14px] fontcl3 logo-f'>Password</label>
                 {
-                error && <p className="logo-f text-[14px] text-red-500">{error.image}</p>
+                data && data.errors && <p className="logo-f text-[14px] text-red-500">{data.errors.password}</p>
                 }
-                <input name='image' placeholder='Password' className='logo-f text-[14px] fontcl inp w-full h-[40px]' type="text" />
+                <input name='password' placeholder='Password' className='logo-f text-[14px] fontcl inp w-full h-[40px]' type="password" />
             </div>
             <div className="flex items-center w-full flex-wrap gap-[10px]">
                 <button className='logo-f w-[100%] sm:w-[49%] md:w-[150px] mega-trans py-[5px] text-[14px] fontcl2 btn1'>{IsLoginPage ? 'Login' : 'Sign up'}</button>
@@ -58,3 +51,38 @@ let error = null;
 }
 
 export default AuthPage
+
+export const authAction = async ({request}) => {
+  let formData = await request.formData();
+  let route = new URL(request.url).searchParams.get('form');
+
+  let data = {
+    email : formData.get('email'),
+    password : formData.get('password'),
+  }
+
+  if(route !== 'login' && route !== 'signup'){
+    throw json({message : 'NOT FOUND!'} ,{status : 404})
+  }
+
+  let res = await fetch(
+    `http://localhost:8080/${route}`,
+    {
+      method : "POST",
+      headers : {
+        'Content-Type' : "application-json",
+      },
+      body : JSON.stringify(data)
+    }
+  )
+  if(res.status === 422){
+    return res;
+  }
+
+  if(!res.ok){
+    throw json({message : 'Something gone wrong'} ,{status : 500})
+  }
+  let resData = res.json();
+  token = resData.token;
+  return token;
+}

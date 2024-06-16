@@ -4,8 +4,8 @@ import Layout from './routes/Layout';
 import PostDetail, { detailAction, detailLoader } from './page/post-detail/PostDetail';
 import CreatePost, { createActoin } from './page/create-post/CreatePost';
 import EditPost, { updateAction } from './page/edit-post/EditPost';
-import Error from './page/error/Error';
-import AuthPage from './page/auth/AuthPage';
+import AuthPage, { authAction } from './page/auth/AuthPage';
+import ErrorPage from './page/error/ErrorPage';
 
 function App() {
 
@@ -13,7 +13,7 @@ function App() {
     {
       path : "/",
       element : <Layout />,
-      errorElement : <Error />,
+      errorElement : <ErrorPage />,
       children : [
         {
           element : <Home />,
@@ -48,7 +48,8 @@ function App() {
          },
          {
           path : 'authenticate',
-          element : <AuthPage />
+          element : <AuthPage />,
+          action : authAction,
          }
       ]
     },
