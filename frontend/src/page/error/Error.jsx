@@ -11,9 +11,9 @@ const Error = () => {
     <p className="logo-f text-[16px] fontcl">{error.message}</p>    
     {
         error.status === 503 ?
-        <div lassName='logo-f w-fit mega-trans py-[5px] text-[14px] fontcl2 ' onClick={()=>window.location.reload()}>Reload</div>
+        <div className='logo-f w-fit mega-trans py-[5px] text-[14px] fontcl2 ' onClick={()=>window.location.reload()}>Reload</div>
                             :
-     <Link to={'/'} lassName='logo-f w-fit mega-trans py-[5px] text-[13px] fontcl2'>Go Back Home</Link>
+     <Link to={'/'} className='logo-f w-fit mega-trans py-[5px] text-[13px] fontcl2'>Go Back Home</Link>
 
     }
     </div>
