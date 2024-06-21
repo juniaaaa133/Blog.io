@@ -7,11 +7,12 @@ const PostForm = ({date,
                    button_text,
                    header,
                    responseValueToUpdate,
-                   error
+                   error,
+                   isSubmitting,
                 }) => {
 
   return (
-    <div className='w-[90%] sm:w-[70%] md:w-[500px] mx-auto my-[50px] flex flex-col gap-[20px]'>
+<div className='w-[90%] sm:w-[70%] md:w-[500px] mx-auto my-[50px] flex flex-col gap-[20px]'>
     <p className="logo-f fontcl text-[18px] sm:text-[24px]">{header}</p>
     <Form method='POST' className='flex flex-col gap-[30px]'>
         <div className="flex flex-col gap-[7px] w-full">
@@ -40,11 +41,10 @@ const PostForm = ({date,
             <input  name='date' className='logo-f text-[14px] fontcl inp w-full h-[40px]' value={date && month && year ? date + '-' + month + '-' + year : responseValueToUpdate.date} type="text" />
         </div>
         <div className="flex items-center w-full flex-wrap gap-[10px]">
-            <button className='logo-f w-[100%] sm:w-[49%] md:w-[150px] mega-trans py-[5px] text-[14px] fontcl2 btn1'>{button_text}</button>
+            <button className={`logo-f w-[100%] sm:w-[49%] md:w-[150px] mega-trans py-[5px] text-[14px] fontcl2 btn1 ${isSubmitting && 'opacity-[.6]'}`} disabled={isSubmitting}>{button_text}</button>
             <Link to='/' className='logo-f w-[100%] text-center sm:w-[49%] md:w-[150px] mega-trans py-[5px] text-[14px] fontcl btn2'>Discard Post</Link>
         </div>
     </Form>
-    
 </div>
   )
 }

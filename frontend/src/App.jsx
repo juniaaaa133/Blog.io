@@ -1,19 +1,28 @@
-import Home, { homeLoader } from './page/home/Home';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Home, { authTokenLoader, homeLoader } from './page/home/Home';
+import { RouterProvider, createBrowserRouter} from 'react-router-dom';
 import Layout from './routes/Layout';
 import PostDetail, { detailAction, detailLoader } from './page/post-detail/PostDetail';
 import CreatePost, { createActoin } from './page/create-post/CreatePost';
 import EditPost, { updateAction } from './page/edit-post/EditPost';
-import Error from './page/error/Error';
+import AuthPage, { authAction } from './page/auth/AuthPage';
+import ErrorPage from './page/error/ErrorPage';
+import Logout, { removeAuthTokenLoader } from './page/logout/Logout';
 
 function App() {
 
   const router = createBrowserRouter([
     {
       path : "/",
+      id : 'root',
       element : <Layout />,
-      errorElement : <Error />,
+      errorElement : <ErrorPage />,
+      loader : authTokenLoader,
       children : [
+        {
+          path : 'logout',
+          element : <Logout />,
+          loader : removeAuthTokenLoader,
+        },
         {
           element : <Home />,
           index : true,
@@ -25,30 +34,30 @@ function App() {
           action : createActoin,
         },
         {
+          id : 'blog',
           path : 'blog/:id',
-          element : <PostDetail />,
-          action :detailAction,
-        },
+          loader : detailLoader,
+          children : [
+            {
+              index : true,
+              element : <PostDetail />,
+              action :detailAction,
+            },
+            {
+              path : 'edit',
+              element :<EditPost />,
+              action: updateAction,
+            }
+          ]
+         },
+         {
+          path : 'authenticate',
+          element : <AuthPage />,
+          action : authAction,
+         }
       ]
     },
-     {
-      id : 'blog',
-      path : 'blog/:id',
-      element :<Layout />,
-      errorElement : <Error />,
-      loader : detailLoader,
-      children : [
-        {
-          index : true,
-          element : <PostDetail />
-        },
-        {
-          path : 'edit',
-          element :<EditPost />,
-          action: updateAction,
-        }
-      ]
-     }
+   
   ])
 
   return <RouterProvider router={router} />
