@@ -1,13 +1,24 @@
-import React from 'react'
-import { Form, Link, json, useActionData, useRouteError, useSearchParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Form, Link, json, redirect, useActionData, useNavigate, useNavigation, useRouteError, useRouteLoaderData, useSearchParams } from 'react-router-dom'
 import { uuidv7 } from 'uuidv7';
+import { storage } from '../../util/storage';
 
 const AuthPage = () => {
 
   let data = useActionData();
+  let authData = useRouteLoaderData('root');
   let [searchParams,setSearchParams] = useSearchParams();
+  let navigation = useNavigation();
+  let navigate = useNavigate();
 
+  let isSubmitting = navigation.state === 'submitting';
   let IsLoginPage = searchParams.get('form') === 'login'
+
+  useEffect(()=>{
+    if(authData && authData.hasToken){
+      navigate('/')
+    }
+  },[])
 
   return (
     <>
@@ -30,7 +41,14 @@ const AuthPage = () => {
                 <input name='password' placeholder='Password' className='logo-f text-[14px] fontcl inp w-full h-[40px]' type="password" />
             </div>
             <div className="flex items-center w-full flex-wrap gap-[10px]">
-                <button className='logo-f w-[100%] sm:w-[49%] md:w-[150px] mega-trans py-[5px] text-[14px] fontcl2 btn1'>{IsLoginPage ? 'Login' : 'Sign up'}</button>
+                <button disabled={isSubmitting} className={`logo-f w-[100%] sm:w-[49%] md:w-[150px] mega-trans py-[5px] text-[14px] fontcl2 btn1 ${isSubmitting && 'opacity-[.6]' }`}>
+                  {IsLoginPage
+                   ?
+                   isSubmitting ? 'Logging In' : 'Login'
+                    :
+                   isSubmitting ? 'Signing Up' : 'Sign up'
+                   }
+                   </button>
             </div>
             {
               IsLoginPage ?
@@ -70,7 +88,7 @@ export const authAction = async ({request}) => {
     {
       method : "POST",
       headers : {
-        'Content-Type' : "application-json",
+        'Content-Type' : "application/json",
       },
       body : JSON.stringify(data)
     }
@@ -82,7 +100,15 @@ export const authAction = async ({request}) => {
   if(!res.ok){
     throw json({message : 'Something gone wrong'} ,{status : 500})
   }
-  let resData = res.json();
-  token = resData.token;
-  return token;
+  let resData = await res.json();
+  let token =  resData.token;
+
+  let tokenExpireDate = new Date()
+  tokenExpireDate.setMinutes(tokenExpireDate.getMinutes() + 1);
+
+  storage.set('token',token);
+  storage.set('user',data.email);
+  storage.set('expired',tokenExpireDate.toISOString())
+
+  return redirect('/');
 }

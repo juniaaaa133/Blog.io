@@ -1,14 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PostForm from '../../components/form/PostForm'
-import { json, redirect, useActionData, useRouteLoaderData } from 'react-router'
+import { json, redirect, useActionData, useNavigate, useNavigation, useRouteLoaderData } from 'react-router'
+import ErrorPage from '../error/ErrorPage';
+import { storage } from '../../util/storage';
 
 const EditPost = () => {
 
     let currentPostData = useRouteLoaderData('blog');
     let errorObj = useActionData();
-    
+    let navigation = useNavigation();
+    let isSubmitting = navigation.state === 'submitting';
+    let authData = useRouteLoaderData('root');
+
   return (
+    authData && !authData.hasToken ?
+    <ErrorPage custom_msg={'404 NOT FOUND!'}/> 
+    :
     <PostForm 
+    isSubmitting={isSubmitting}
     header={'Edit Post'}
     button_text={'Update Post'}
     error={errorObj && errorObj.errors}
@@ -34,6 +43,7 @@ export const updateAction = async ({request,params}) => {
         method : "PATCH",
         headers : {
             "Content-Type" : "application/json",
+            'Authorization' : `Bearer ${storage.get('token')}`
         },
         body : JSON.stringify(data)
         }
