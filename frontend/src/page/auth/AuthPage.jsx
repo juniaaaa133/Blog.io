@@ -104,7 +104,7 @@ export const authAction = async ({request}) => {
   let token =  resData.token;
 
   let tokenExpireDate = new Date()
-  tokenExpireDate.setMinutes(tokenExpireDate.getMinutes() + 1);
+  tokenExpireDate.setHours(tokenExpireDate.getHours() + 1);
 
   storage.set('token',token);
   storage.set('user',data.email);
