@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Form, Link, json, redirect, useActionData, useNavigate, useNavigation, useRouteError, useRouteLoaderData, useSearchParams } from 'react-router-dom'
 import { uuidv7 } from 'uuidv7';
 import { storage } from '../../util/storage';
+import { api_url } from '../../util/api';
 
 const AuthPage = () => {
 
@@ -84,7 +85,7 @@ export const authAction = async ({request}) => {
   }
 
   let res = await fetch(
-    `http://localhost:8080/${route}`,
+    `${api_url}/${route}`,
     {
       method : "POST",
       headers : {

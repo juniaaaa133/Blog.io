@@ -37,7 +37,7 @@ const Layout = () => {
        {
         state === 'loading' ?
 <div className="flex w-full h-[100vh] items-center justify-center">
-<RingLoader color="#36d7b7" />
+<RingLoader color="#e83553" />
 </div>
 
         :

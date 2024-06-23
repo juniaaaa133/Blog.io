@@ -3,6 +3,7 @@ import PostForm from '../../components/form/PostForm'
 import { json, redirect, useActionData, useNavigate, useNavigation, useRouteLoaderData } from 'react-router'
 import ErrorPage from '../error/ErrorPage';
 import { storage } from '../../util/storage';
+import { api_url } from '../../util/api';
 
 const EditPost = () => {
 
@@ -39,7 +40,7 @@ export const updateAction = async ({request,params}) => {
     }
 
     let res = await fetch(
-        `http://localhost:8080/posts/${params.id}`,{
+        `${api_url}/posts/${params.id}`,{
         method : "PATCH",
         headers : {
             "Content-Type" : "application/json",

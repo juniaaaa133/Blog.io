@@ -6,6 +6,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
 import { useSubmit } from 'react-router-dom';
 import { storage } from '../../util/storage';
+import { api_url } from '../../util/api';
 
 const PostDetail = () => {
 
@@ -55,7 +56,7 @@ export default PostDetail
 
 export const detailLoader = async ({request,params}) => {
     let res = await fetch(
-        `http://localhost:8080/posts/${params.id}`
+        `${api_url}/posts/${params.id}`
       )
    if(res.status === 503){
         throw json({message : "No Internet Connection!"} , {status : 503})
@@ -70,7 +71,7 @@ export const detailLoader = async ({request,params}) => {
 
 export const detailAction = async ({request,params}) => {
   let res = await fetch(
-    `http://localhost:8080/posts/${params.id}`,
+    `${api_url}/posts/${params.id}`,
     {
       method : request.method,
       headers :{

@@ -3,6 +3,7 @@ import { Form, redirect, useActionData, useNavigate, useNavigation, useRouteLoad
 import { uuidv7 } from 'uuidv7';
 import PostForm from '../../components/form/PostForm';
 import { storage } from '../../util/storage';
+import { api_url } from '../../util/api';
 
 const CreatePost = () => {
 
@@ -54,7 +55,7 @@ let data = {
 }
 
 let res = await fetch(
-    `http://localhost:8080/posts`,
+    `${api_url}/posts`,
     {
       method : 'POST',
       headers : {

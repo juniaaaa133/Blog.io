@@ -6,6 +6,7 @@ import HeadText from '../../components/head-text/HeadText'
 import { redirect, useLoaderData, useRouteLoaderData } from 'react-router'
 import { storage } from '../../util/storage'
 import { useSubmit } from 'react-router-dom'
+import { api_url } from '../../util/api'
 
 const Home = () => {
 
@@ -31,7 +32,7 @@ export default Home
 
 export const homeLoader = async () => {
   let res = await fetch(
-    `http://localhost:8080/posts`,
+    `${api_url}/posts`,
   )
  if(res.status === 503){
     throw json({message : "No Internet Connection!"} , {status : 503})
